@@ -281,6 +281,8 @@ input:-webkit-autofill:focus {
   [class*="menu"] a{
     text-decoration: none;
     color: inherit;
+    display: block;
+    width: 100%;
   }
 
   .nav [class*="menu"] svg{
