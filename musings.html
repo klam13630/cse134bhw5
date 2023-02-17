@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Musings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="nav">
+      <input type="checkbox" id="nav_checkbox" class="nav_checkbox">
+      <label for="nav_checkbox" class="toggle">
+        &#9776;
+      </label>
+      <ul class="nav_menu">
+        <li> <a href="./index.html">Home</a> </li>
+        <li> <a href="./projects.html">Projects</a> </li>
+        <li> <a href="./contact.html">Contact</a> </li>
+        <li> <a href="./musings.html"><u>Musings</u></a> </li>  
+      </ul>
+    </nav> 
+    <br>
+    </nav>
+    <header>
+      <h1> Musings </h1>
+      <p>Disclaimer: things covered in this section may or may not be related to development. It's really just a place to consolidate my random thoughts.</p>
+    </header>
+    <main class="test">
+      <section class="musings">
+        
+        <article>
+          <h2> Making of this website </h2>
+          <p>So, I'm writing this post while I am creating this website, therefore some of the things I mention may be gone by the time I finalize my design (Or maybe not! Maybe I planned properly!). Either way, this is just going to be a summary of the things I did.</p>
+          <p>One weird issue I faced had to do with autofilling of the contact form. When the browser autofills, it applies a style called <strong>input:-internal-autofill-selected</strong>. More specifically, it looks like this: </p>
+          <pre>
+          <code>
+input:-internal-autofill-selected {
+  appearance: menulist-button;
+  background-image: none !important;
+  background-color: -internal-light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+  color: fieldtext !important;
+}
+          </code>
+          </pre>
+          <p>It makes the input field change color from the normal dark gray background and light gray text to black text with white background. (If you're wondering what I mean with dark gray background and light gray text, then you're probably on light mode. I probably should've mentioned that I work mostly on dark mode.)</p>
+          <img src="./assets/media/autofill_example.webp" alt="autofill_example">
+          <p>Now, while it is perhaps helpful in that it indicates how the browser stores the autofill data in itself, the form I have doesn't have any particularly sensitive information (debatably the email address), I think I prefer not suddenly blinding users.</p>
+          <p>One thing to note is that these stylings use the !important tag, which indicates that they shouldn't be overwritten by other CSS. In order to get around that (kinda hacky, not great), I instead chose to use the following: </p>
+<pre>
+            <code>
+              input:-webkit-autofill,
+              input:-webkit-autofill:focus {
+                &nbsp;&nbsp;transition: background-color 600000s 0s, color 600000s 0s;
+              }
+            </code>
+</pre>
+          <p>Basically, what it does is force the background color change from dark to light occur over 600000s, or 1000 minutes, which, realistically, should never finish. </p>
+        </article>
+
+        <article>
+          <h2> Rithmatics </h2>
+          <p>  
+          One of my favorite books is <i>The Rithmatist</i>, by Brandon Sanderson. 
+          In particular, the system of Rithmatics is fascinating to me.
+          Rithmatics is a magic system that uses chalk. 
+          Drawing different things has different effects, some of which are detailed below.
+          </p>       
+          <div>
+            <table>
+              <caption>Lines</caption>
+              <colgroup>
+                <col span="1" class="line">
+                <col span="1" class="description">
+                <col span="1" class="figure">
+              </colgroup>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Example</th>
+              </tr>
+              <tr>
+                <td>Line of Warding</td>
+                <td>
+                  <ul>
+                    <li>Round shape (circle or ellipse)</li>
+                    <li>Strength is proportional to curve</li>
+                    <li>Require anchoring at bind points</li>
+                  </ul>
+                </td>
+                <td>
+                  <figure>
+                    <img src="./assets/media/Line_of_Warding.svg" alt="Line of Warding" width="200">
+                    <figcaption>by Ben McSweeney</figcaption>
+                  </figure>
+                </td>
+              </tr>
+              <tr>
+                <td>Line of Forbiddance</td>
+                <td>
+                  <ul>
+                    <li>Straight line</li>
+                    <li>Strength is proportional to thickness</li>
+                    <li>Creates impenetrable barrier perpendicular to the surface (includes physical objects)</li>
+                    <li>
+                      <details>
+                        <summary>Spoilers approaching: A Line of Forbiddance was shown to even be able to stop...</summary>
+                        A bullet, and later mentioned to block cannonballs.
+                      </details>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <figure>
+                    <img src="./assets/media/Line_of_Forbiddance.svg" alt="Line of Forbiddance" width="200">
+                    <figcaption>by Ben McSweeney</figcaption>
+                  </figure>
+                </td>
+              </tr>
+              <tr>
+                <td>Line of Vigor</td>
+                <td>
+                  <ul>
+                    <li>Squiggly line (sine wave)</li>
+                    <li>Strength is proportional to curve (more curves = stronger)</li>
+                    <li>Reflect off Lines of Forbiddance</li>
+                  </ul>
+                </td>
+                <td>
+                  <figure>
+                    <img src="./assets/media/Line_of_Vigor.svg" alt="Line of Warding" width="200">
+                    <figcaption>by Ben McSweeney</figcaption>
+                  </figure>
+                </td>
+              </tr>
+              <tr>
+                <td>Line of Making</td>
+                <td>
+                  <ul>
+                    <li>Variable shape</li>
+                    <li>Strength varies with complexity and aesthetic</li>
+                    <li>Used to create chalklings</li>
+                    <li>Can only interact with chalk without Glyph of Rending</li>
+                  </ul>
+                </td>
+                <td>
+                  <figure>
+                    <img src="./assets/media/Line_of_Making_complexity.svg" alt="Line of Warding" width="200">
+                    <figcaption>by Ben McSweeney</figcaption>
+                  </figure>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <p> One particular interest is how exactly aesthetic beauty, which determines the strength of chalklings, is determined. Is there actually some form of objective measure, as assumed by the characters in the story?</p>
+          <p>While it's true that some things are clearly less well drawn than others (see: my poor attempt at an icon (if you're reading this, it's coming soon&trade;)), I think there exists a point at which objectivity bleeds into subjectivity.</p>
+          <p>For example, the Mona Lisa is considered one of the best painintgs in the modern world&mdash;if it were converted to a chalkling (somehow), how strong would that be? Could we create a scale from my poor attempt at drawing a logo to the Mona List in terms of chalkling strength? Food for thought.</p>
+        </article>
+      </section>
+      <aside class="sidebar">
+        <h2> Sidebar</h2>
+        <p>Currently empty! Will have something when I have more content!</p>
+      </aside>
+    </main>
+  </body>
