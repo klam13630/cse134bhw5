@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Custom Dialogs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="assets\src\DOMPurify-main\dist\purify.min.js"></script>
+  </head>
+  <body>
+    <nav class="nav">
+      <input type="checkbox" id="nav_checkbox" class="nav_checkbox">
+      <label for="nav_checkbox" class="toggle">
+        &#9776;
+      </label>
+      <ul class="nav_menu">
+        <li> <a href="./index.html">Home</a> </li>
+        <li> <a href="./projects.html">Projects</a> </li>
+        <li> <a href="./contact.html">Contact</a> </li>
+        <li> <a href="./musings.html">Musings</a> </li>  
+      </ul>
+    </nav> 
+    <br>
+    <main>
+      <h1>Custom Dialogs</h1>
+      <form id="custom-dialogs">
+        <fieldset>
+          <legend>Custom Dialogs</legend>
+          <button id="button-alert" type="button"> Alert </button>
+          <button id="button-confirm" type="button"> Confirm </button>
+          <button id="button-prompt" type="button"> Prompt </button>
+          <button id="button-prompt-safe" type="button"> Safer Prompt </button>
+        </fieldset>
+        <div id="myDialog" class="dialog">
+          <!-- dialog content -->
+          <div class="dialog-content">
+            <input id="dialog-input" type="text">
+            <p id="dialog-text"></p>
+            <button class="yes" type="button">OK</button>
+            <button class="no" type="button">Cancel</button>
+            <button type="button" class="close">OK</button>
+            <input type="checkbox" id="safe">
+          </div>
+        </div>
+        <br>
+        <output id="out" name="out"></output>
+      </form>
+    </main>
+  </body>
+  <script language="javascript" type="module">
+    import {showAlert, showConfirm, showPrompt, closeYes, closeNo, closeDialog} from "./customdialogs.js";
+    
+    const e1 = document.getElementById('button-alert');
+    e1.addEventListener("click", 
+    function() {showAlert("This is your alert!")}, 
+    false);
+
+    const e2 = document.getElementById("button-confirm");
+    e2.addEventListener("click",
+    function() {
+      showConfirm("Would you like to confirm?")
+    }, false);
+
+    const e3 = document.getElementById("button-prompt");
+    e3.addEventListener("click", function() {showPrompt("Please enter your name.", "Your Name", false)}, false);
+
+    const e4 = document.getElementById("button-prompt-safe");
+    e4.addEventListener("click", function() {showPrompt("Please enter your name.", "Your Name", true)}, false);
+
+    const e5 = document.querySelector(".close");
+    e5.addEventListener("click", closeDialog, false);
+
+    const e6 = document.querySelector(".yes");
+    e6.addEventListener("click", function(){
+      if (document.getElementById("safe").checked) {
+        document.getElementById("dialog-input").value = DOMPurify.sanitize(document.getElementById("dialog-input").value, {USE_PROFILES: {html: false}});
+      }
+      closeYes();
+      
+    }, false);
+    
+    const e7 = document.querySelector(".no");
+    e7.addEventListener("click", function(){closeNo()}, false);
+  </script>
+</html>

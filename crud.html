@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Blog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="assets\src\DOMPurify-main\dist\purify.min.js"></script>
+  </head>
+  <body>
+    <nav class="nav">
+      <input type="checkbox" id="nav_checkbox" class="nav_checkbox">
+      <label for="nav_checkbox" class="toggle">
+        &#9776;
+      </label>
+      <ul class="nav_menu">
+        <li> <a href="./index.html">Home</a> </li>
+        <li> <a href="./projects.html">Projects</a> </li>
+        <li> <a href="./contact.html">Contact</a> </li>
+        <li> <a href="./musings.html">Musings</a> </li>  
+      </ul>
+    </nav> 
+    <br>
+    <header>
+      <h1> Blog </h1>
+      <p>Disclaimer: This is literally just my musings page, but with JavaScript used to populate posts from LocalStorage instead. I plan to transform/combine them later, but for now, it's getting out of hand with two of them!</p>
+    </header>
+    <main class="musings">
+      <div id="blog">
+        <h2 id="no-posts"> Looks like there aren't any posts here yet! </h2>
+      </div>  
+    </main>
+    <aside class="sidebar center">
+      <button type="button" id="button-add"> Add </button>
+    </aside>
+    <div id="myDialog" class="dialog">
+      <!-- dialog content -->
+      <form id="dialog-content" class="dialog-content">
+      </form>
+    </div>
+  </body>
+  <script language="javascript" type="module">
+    import {dialogMakeAlert, dialogMakePrompt, dialogAppendYes, dialogAppendNo,dialogAppendInputText, dialogAppendInputDate,  dialogAppendInputTextArea, showDialog, closeDialog} from "./custom.js"
+    import {makeBlogPost, deleteBlogPost} from "./blog.js";
+    import ShortUniqueId from 'https://esm.sh/short-unique-id';
+    const uid = new ShortUniqueId(length=16);
+
+    let posts = localStorage.getItem("posts");
+    if (!posts || posts.length <= 12) {
+      posts ='{"posts":[]}';
+    }
+    else {
+      document.getElementById("no-posts").style.display = "none";
+    }
+    let obj = JSON.parse(posts);
+    for (let i = 0; i < obj["posts"].length; i++) {
+      const root = document.getElementById("blog");
+      const title = obj["posts"][i]["submit-title"];
+      const date = obj["posts"][i]["submit-date"]
+      const summary = obj["posts"][i]["submit-summary"]
+      const id = obj["posts"][i]["id"]
+      const ret = makeBlogPost(root, 
+      DOMPurify.sanitize(title,  {USE_PROFILES: {html: false}}), 
+      DOMPurify.sanitize(date, {USE_PROFILES: {html: false}}), 
+      DOMPurify.sanitize(summary,  {USE_PROFILES: {html: false}}), 
+      id);
+      const edit = ret[0];
+      const del = ret[1];
+      addEditDeleteFuncs(edit, del, id);
+    }
+    
+    const add = document.getElementById('button-add');
+    add.addEventListener("click",
+    function () {
+      dialogMakePrompt();
+      let in1 = dialogAppendInputText("Title", "Blog Title", "submit-title");
+      let in2 = dialogAppendInputDate("submit-date");
+      let in3 = dialogAppendInputTextArea("Summary", "Blog Summary", "submit-summary");
+      let yes = dialogAppendYes();
+      let no = dialogAppendNo();
+      yes.addEventListener("click", 
+      function() {
+        const root = document.getElementById("blog");
+        const i = uid();
+        const val1 = DOMPurify.sanitize(in1.value, {USE_PROFILES: {html: false}});
+        const val2 = DOMPurify.sanitize(in2.value, {USE_PROFILES: {html: false}});
+        const val3 = DOMPurify.sanitize(in3.value, {USE_PROFILES: {html: false}});
+        const o = JSON.parse(localStorage.getItem("posts"));
+        o["posts"].push({"submit-title": val1, "submit-date": val2, "submit-summary": val3, "id": i});
+        const ret = makeBlogPost(root, val1, val2, val3, i);
+        const edit = ret[0];
+        const del = ret[1];
+        addEditDeleteFuncs(edit, del, i);
+        localStorage.setItem("posts", JSON.stringify(o));
+        document.getElementById("no-posts").style.display = "none";
+        closeDialog();
+      },false);
+
+      no.addEventListener("click", closeDialog, false);
+      showDialog();
+    }, false);
+
+
+    // this function is here, rather than in blog.js so I can easily sanitize the inputs in the onclick functions.
+    function addEditDeleteFuncs(edit, del, id) {
+      edit.addEventListener("click", 
+      function editBlog() {
+        dialogMakePrompt();
+          const in1 = dialogAppendInputText("Title", "Blog Title", "submit-title");
+          const in2 = dialogAppendInputDate("submit-date");
+          const in3 = dialogAppendInputTextArea("Summary", "Blog Summary", "submit-summary");
+          const yes = dialogAppendYes();
+          const no = dialogAppendNo();
+          const title = document.querySelector(`[id="${id}"] .title`);
+          const date = document.querySelector(`[id="${id}"] .date`);
+          const summary = document.querySelector(`[id="${id}"] .summary`);
+          in1.value = title.innerText;
+          in2.value = date.innerText.split("Date: ")[1];
+          in3.value = summary.innerText.split("Summary: ")[1];
+          yes.addEventListener("click",
+          function closeConfirmTrue() {
+            const val1 = DOMPurify.sanitize(in1.value, {USE_PROFILES: {html: false}});
+            const val2 = DOMPurify.sanitize(in2.value, {USE_PROFILES: {html: false}});
+            const val3 = DOMPurify.sanitize(in3.value, {USE_PROFILES: {html: false}});
+            console.log(in3.value);
+            console.log(val3);
+            title.innerText = val1;
+            date.innerText = "Date: ".concat(val2);
+            summary.innerText = "Summary: ".concat(val3);
+            let posts = localStorage.getItem("posts");
+            let o = JSON.parse(posts);
+            const index = o["posts"].findIndex(p => p.id === id);
+            o["posts"][index]["submit-title"] = in1.value;
+            o["posts"][index]["submit-date"] = in2.value;
+            o["posts"][index]["submit-summary"] = in3.value;
+            localStorage.setItem("posts", JSON.stringify(o));
+            closeDialog();
+          }, false);
+          no.addEventListener("click", 
+          function closeConfirmFalse() {
+            closeDialog();
+          }, false);
+          showDialog();
+      }, false);
+
+      del.addEventListener("click", 
+      function () {
+        dialogMakeAlert();
+        const yes = dialogAppendYes();
+        const no = dialogAppendNo();
+        const text = document.querySelector(".dialog-text");
+        text.innerHTML = "Are you sure you want to delete this?";
+        yes.addEventListener("click", 
+        function closeConfirmTrue() {
+          let posts = localStorage.getItem("posts");
+          let o = JSON.parse(posts);
+          o = deleteBlogPost(id, o);
+          localStorage.setItem("posts", JSON.stringify(o));
+          if (o["posts"].length == 0) {
+            document.getElementById("no-posts").style.display = "block";
+          }
+          closeDialog();
+        }, false);
+        no.addEventListener("click", 
+        function closeConfirmFalse() {
+          closeDialog();
+        }, false);
+        showDialog();
+      }, false);
+    }
+    
+  </script>
+</html>

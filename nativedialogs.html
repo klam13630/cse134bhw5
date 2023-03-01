@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Native Dialogs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="assets\src\DOMPurify-main\dist\purify.min.js"></script>
+  </head>
+  <body>
+    <nav class="nav">
+      <input type="checkbox" id="nav_checkbox" class="nav_checkbox">
+      <label for="nav_checkbox" class="toggle">
+        &#9776;
+      </label>
+      <ul class="nav_menu">
+        <li> <a href="./index.html">Home</a> </li>
+        <li> <a href="./projects.html">Projects</a> </li>
+        <li> <a href="./contact.html">Contact</a> </li>
+        <li> <a href="./musings.html">Musings</a> </li>  
+      </ul>
+    </nav> 
+    <br>
+    <main>
+      <h1>Native Dialogs</h1>
+      <form id="native-dialogs">
+        <fieldset>
+          <legend>Native Dialogs</legend>
+          <button id="button-alert" type="button"> Alert </button>
+          <button id="button-confirm" type="button"> Confirm </button>
+          <button id="button-prompt" type="button"> Prompt </button>
+          <button id="button-prompt-safe" type="button"> Safer Prompt </button>
+        </fieldset>
+        <br>
+        <output id="out" name="out"></output>
+      </form>
+    </main>
+  </body>
+  <script language="javascript" type="text/javascript">
+    function confirmFunc() {
+      document.getElementById("out").value = "";
+      setTimeout(function() {
+        const confirm_text = confirm("Would you like to confirm this message?");
+        const confirm_out = document.getElementById("out");
+        confirm_out.value = "The value returned by the confirm method is: " + confirm_text;
+      },10)
+      
+    }
+
+    function unsafePromptFunc() {
+      document.getElementById("out").value = "";
+      setTimeout(function() {
+        let prompt_text = prompt("Please enter your name", "Your Name");
+        if (prompt_text != null) {
+          document.getElementById("out").innerHTML = "The value returned by the unsafe prompt method is: " + prompt_text;
+        }
+        else {
+          document.getElementById("out").value = "User did not enter a value."
+        }
+      },10)
+    }
+
+    function safePromptFunc() {
+      document.getElementById("out").value = "";
+      setTimeout(function() {
+        let prompt_text = prompt("Please enter your name", "Your Name");
+        if (prompt_text != null) {
+          document.getElementById("out").value = `The value returned by the safe prompt method is: ${DOMPurify.sanitize(prompt_text,  {USE_PROFILES: {html: false}})}`;
+        }
+        else {
+          document.getElementById("out").value = "User did not enter a value."
+        }
+      },10)
+      
+    }
+    
+    const el = document.getElementById("button-alert");
+    el.addEventListener("click",  
+    () => {
+      document.getElementById("out").value = "";
+      setTimeout(function() {
+        alert("This is your alert!");
+      }, 10)
+    }, false);
+    const e2 = document.getElementById("button-confirm");
+    e2.addEventListener("click", confirmFunc, false)
+    const e3 = document.getElementById("button-prompt");
+    e3.addEventListener("click", unsafePromptFunc, false);
+    const e4 = document.getElementById("button-prompt-safe");
+    e4.addEventListener("click", safePromptFunc, false);
+  </script>
+</html>

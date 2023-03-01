@@ -149,6 +149,7 @@ input, select, textarea, button {
   background-color: var(--bg-color);
   border: none;
 }
+
 input, select, textarea {
   width: 75%;
 }
@@ -167,6 +168,13 @@ tr, td {
   border: 1px solid var(--border-color);
 }
 
+header {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+
 .musings {   
   float: left;
   width: 74%;
@@ -177,11 +185,12 @@ tr, td {
 .sidebar {
   float: left;
   width: 23%;
-  padding-left: 20px;
+  padding: 1.5em;
   border: 1px solid var(--border-color);
   margin-left: 1%;
   margin-right: 1%;
   margin-bottom: 2em;
+
 }
 
 img {
@@ -213,7 +222,6 @@ article {
    font-size: 1.4em;
 }
 
-
 pre, pre code {
   overflow: scroll;
   overflow-y: hidden;
@@ -233,6 +241,118 @@ input:-webkit-autofill,
 input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
 }
+
+#native-dialogs {
+  margin-top: 1em;
+}
+
+#out {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  min-height: 4em;
+  justify-content: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+#out:not(:empty) {
+  border: 3px solid var(--border-color);
+  border-style: double;
+}
+
+.dialog {
+  display: none; 
+  position: fixed; 
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+  text-align: center;
+}
+
+.dialog-content, #dialog-content {
+  background-color: var(--bg-color);
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  width: 50%; 
+  overflow: hidden;
+  justify-items: right;
+}
+
+.close, .no, .yes {
+  border: 1px solid var(--border-color);
+  color: var(--font-color);
+  margin: 1em;
+  position:relative;
+  float: right;
+}
+
+.edit, .del {
+  font-size: 2em;
+  width: 2ch;
+  height: 2ch;
+  
+}
+
+.close:hover, .close:focus, 
+.no:hover, .no:focus, 
+.yes:hover, .yes:focus {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dialog-input, #dialog-input {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--border-color);
+}
+
+.dialog-label {
+  margin-right: 1ch;
+}
+
+#safe {
+  display: none;
+}
+
+.blog {
+  margin: 1em;
+  border: 1px solid #c4c4c4;
+  border-radius: 1em;
+  width: 73%;
+  padding: 1em;
+  float: left;
+}
+
+.blog-post {
+  border: 1px solid #c4c4c4;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+.edit {
+  margin-right: 1em;
+}
+
+.center {
+  text-align: center;
+}
+
+#button-add {
+  width: 75%;
+  height: auto;
+}
+
 
 
 @media screen and (max-width: 768px) {
@@ -303,7 +423,7 @@ input:-webkit-autofill:focus {
     width: 100%;
   }
 
-  .musings, .sidebar, form {
+  .musings, .sidebar, form, .blog-post {
     width: 100%;
     padding: 0;
     margin:0 0 1em 0;
@@ -339,4 +459,12 @@ input:-webkit-autofill:focus {
 		padding-right: 10px; 
 		white-space: nowrap;
 	}
+  .dialog-content, #dialog-content {
+    width: 90%;
+  }
+  
+  #button-add {
+    margin:1em;
+    float:none;
+  }
 }
