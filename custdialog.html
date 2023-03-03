@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Custom Dialogs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="assets\src\DOMPurify-main\dist\purify.min.js"></script>
+  </head>
+    <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T529DVJ2T6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-T529DVJ2T6');
+  </script>
+  <body>
+    <nav class="nav">
+      <input type="checkbox" id="nav_checkbox" class="nav_checkbox">
+      <label for="nav_checkbox" class="toggle">
+        &#9776;
+      </label>
+      <ul class="nav_menu">
+        <li> <a href="./index.html">Home</a> </li>
+        <li> <a href="./projects.html">Projects</a> </li>
+        <li> <a href="./contact.html">Contact</a> </li>
+        <li> <a href="./musings.html">Musings</a> </li>  
+      </ul>
+    </nav> 
+    <br>
+    <main>
+      <h1>Custom Dialogs</h1>
+      <form id="custom-dialogs">
+        <fieldset>
+          <legend>Custom Dialogs</legend>
+          <button id="button-alert" type="button"> Alert </button>
+          <button id="button-confirm" type="button"> Confirm </button>
+          <button id="button-prompt" type="button"> Prompt </button>
+          <button id="button-prompt-safe" type="button"> Safer Prompt </button>
+       </fieldset>
+      </form>
+        <dialog id="myDialog">
+          <form method="dialog">
+            <div id="dialog-content"> 
+            </div>
+            <div id="dialog-buttons">
+              <button id="confirmBtn" class="yes" value="default">OK</button>
+              <button value="cancel" class="no">Cancel</button>
+            </div>
+          </form>
+        </dialog>
+        <br>
+        <output id="out" name="out"></output>
+    </main>
+  </body>
+  <script language="javascript" type="module">
+    import {dialogMakeAlert, dialogMakePrompt, dialogAppendInputText} from "./custom.js"
+    const dialog = document.getElementById("myDialog");
+    const e1 = document.getElementById('button-alert');
+    const yes = document.querySelector(".yes");
+    const no = document.querySelector(".no");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const out = document.getElementById("out");
+    e1.addEventListener("click", function() {
+      out.innerHTML = "";
+      dialogMakeAlert();
+      const text = document.querySelector(".dialog-text");
+      text.innerHTML = "This is your alert!";
+      no.style.visibility = "hidden";
+      dialog.addEventListener("close", function() {}, false);
+      dialog.showModal();
+    })
+
+    const e2 = document.getElementById('button-confirm');
+    e2.addEventListener("click", function() {
+      out.innerHTML = "";
+      dialogMakeAlert();
+      const text = document.querySelector(".dialog-text");
+      text.innerHTML = "Would you like to confirm?";
+      no.style.visibility = "visible";
+      dialog.addEventListener("close", function() {
+        out.innerHTML = `The value returned by confirm is: ${dialog.returnValue}.`;
+      }, false);
+      dialog.showModal();
+    })
+
+    const e3 = document.getElementById('button-prompt');
+    e3.addEventListener("click", function() {
+      out.innerHTML = "";
+      dialogMakePrompt();
+      no.style.visibility = "visible";
+      let id = "submit-name"
+      dialogAppendInputText("Name", "Your Name", id);
+      dialog.addEventListener("close", function() {
+        if (dialog.returnValue == "default") {
+          out.innerHTML = `The value returned by unsafe prompt is is: ${ document.getElementById(id).value}.`;
+        }
+        else {
+          out.innerHTML = "User did not enter a value.";
+        }
+      }, false);
+      dialog.showModal();
+    }, false);
+
+    const e4 = document.getElementById('button-prompt-safe');
+    e4.addEventListener("click", function() {
+      out.innerHTML = "";
+      dialogMakePrompt();
+      no.style.visibility = "visible";
+      let id = "submit-name";
+      dialogAppendInputText("Name", "Your Name", id);
+      dialog.addEventListener("close", function() {
+        if (dialog.returnValue == "default") {
+          out.innerHTML = `The value returned by safe prompt is is: ${DOMPurify.sanitize(document.getElementById(id).value, {USE_PROFILES: {html: false}})}.`;
+        }
+        else {
+          out.innerHTML = "User did not enter a value.";
+        }
+      }, false);
+      dialog.showModal();
+    }, false);
+  </script>
+</html>
