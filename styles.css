@@ -293,7 +293,7 @@ dialog {
   justify-items: right;
 }
 
-.no, .yes {
+.close, .no, .yes {
   border: 1px solid var(--border-color);
   color: var(--font-color);
   margin: 1em;
@@ -307,6 +307,7 @@ dialog {
   height: 2ch;
 }
 
+.close:hover, .close:focus,
 .no:hover, .no:focus, 
 .yes:hover, .yes:focus {
   text-decoration: none;

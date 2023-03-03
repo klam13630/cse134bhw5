@@ -53,6 +53,7 @@
     import {dialogMakeAlert, dialogMakePrompt, dialogAppendYes, dialogAppendNo,dialogAppendInputText, dialogAppendInputDate,  dialogAppendInputTextArea, showDialog, closeDialog} from "./custom.js"
     import {makeBlogPost, deleteBlogPost} from "./blog.js";
     import ShortUniqueId from 'https://esm.sh/short-unique-id';
+    // used to generate unique id
     const uid = new ShortUniqueId(length=16);
 
     let posts = localStorage.getItem("posts");
@@ -64,6 +65,7 @@
     }
     let obj = JSON.parse(posts);
     for (let i = 0; i < obj["posts"].length; i++) {
+      // for each post in localstorage, post it on html
       const root = document.getElementById("blog");
       const title = obj["posts"][i]["submit-title"];
       const date = obj["posts"][i]["submit-date"]
@@ -90,6 +92,7 @@
       let no = dialogAppendNo();
       yes.addEventListener("click", 
       function() {
+        // add new post to html and localstorage
         const root = document.getElementById("blog");
         const i = uid();
         const val1 = DOMPurify.sanitize(in1.value, {USE_PROFILES: {html: false}});
@@ -116,41 +119,42 @@
       edit.addEventListener("click", 
       function editBlog() {
         dialogMakePrompt();
-          const in1 = dialogAppendInputText("Title", "Blog Title", "submit-title");
-          const in2 = dialogAppendInputDate("submit-date");
-          const in3 = dialogAppendInputTextArea("Summary", "Blog Summary", "submit-summary");
-          const yes = dialogAppendYes();
-          const no = dialogAppendNo();
-          const title = document.querySelector(`[id="${id}"] .title`);
-          const date = document.querySelector(`[id="${id}"] .date`);
-          const summary = document.querySelector(`[id="${id}"] .summary`);
-          in1.value = title.innerText;
-          in2.value = date.innerText.split("Date: ")[1];
-          in3.value = summary.innerText.split("Summary: ")[1];
-          yes.addEventListener("click",
-          function closeConfirmTrue() {
-            const val1 = DOMPurify.sanitize(in1.value, {USE_PROFILES: {html: false}});
-            const val2 = DOMPurify.sanitize(in2.value, {USE_PROFILES: {html: false}});
-            const val3 = DOMPurify.sanitize(in3.value, {USE_PROFILES: {html: false}});
-            console.log(in3.value);
-            console.log(val3);
-            title.innerText = val1;
-            date.innerText = "Date: ".concat(val2);
-            summary.innerText = "Summary: ".concat(val3);
-            let posts = localStorage.getItem("posts");
-            let o = JSON.parse(posts);
-            const index = o["posts"].findIndex(p => p.id === id);
-            o["posts"][index]["submit-title"] = in1.value;
-            o["posts"][index]["submit-date"] = in2.value;
-            o["posts"][index]["submit-summary"] = in3.value;
-            localStorage.setItem("posts", JSON.stringify(o));
-            closeDialog();
-          }, false);
-          no.addEventListener("click", 
-          function closeConfirmFalse() {
-            closeDialog();
-          }, false);
-          showDialog();
+        const in1 = dialogAppendInputText("Title", "Blog Title", "submit-title");
+        const in2 = dialogAppendInputDate("submit-date");
+        const in3 = dialogAppendInputTextArea("Summary", "Blog Summary", "submit-summary");
+        const yes = dialogAppendYes();
+        const no = dialogAppendNo();
+        const title = document.querySelector(`[id="${id}"] .title`);
+        const date = document.querySelector(`[id="${id}"] .date`);
+        const summary = document.querySelector(`[id="${id}"] .summary`);
+        in1.value = title.innerText;
+        in2.value = date.innerText.split("Date: ")[1];
+        in3.value = summary.innerText.split("Summary: ")[1];
+        yes.addEventListener("click",
+        function closeConfirmTrue() {
+        // swap the values of html and localstorage to ones from edit
+        const val1 = DOMPurify.sanitize(in1.value, {USE_PROFILES: {html: false}});
+        const val2 = DOMPurify.sanitize(in2.value, {USE_PROFILES: {html: false}});
+        const val3 = DOMPurify.sanitize(in3.value, {USE_PROFILES: {html: false}});
+        console.log(in3.value);
+        console.log(val3);
+        title.innerText = val1;
+        date.innerText = "Date: ".concat(val2);
+        summary.innerText = "Summary: ".concat(val3);
+        let posts = localStorage.getItem("posts");
+        let o = JSON.parse(posts);
+        const index = o["posts"].findIndex(p => p.id === id);
+        o["posts"][index]["submit-title"] = in1.value;
+        o["posts"][index]["submit-date"] = in2.value;
+        o["posts"][index]["submit-summary"] = in3.value;
+        localStorage.setItem("posts", JSON.stringify(o));
+          closeDialog();
+        }, false);
+        no.addEventListener("click", 
+        function closeConfirmFalse() {
+          closeDialog();
+        }, false);
+        showDialog();
       }, false);
 
       del.addEventListener("click", 
@@ -162,6 +166,7 @@
         text.innerHTML = "Are you sure you want to delete this?";
         yes.addEventListener("click", 
         function closeConfirmTrue() {
+          // remove post from html and localstorage
           let posts = localStorage.getItem("posts");
           let o = JSON.parse(posts);
           o = deleteBlogPost(id, o);

@@ -34,7 +34,6 @@ function showPrompt(msg, placeholder, safe) {
   document.getElementById("out").innerHTML = "";
   type = "prompt-";
   type = type.concat(safe ? "safe" : "unsafe");
-  console.log(type);
 }
 
 function pressYes(){
