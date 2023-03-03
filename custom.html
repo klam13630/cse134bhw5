@@ -56,6 +56,7 @@
     import {dialogMakeAlert, dialogMakePrompt, dialogAppendYes, dialogAppendNo,dialogAppendInputText, showDialog, closeDialog} from "./custom.js"
 
     const e1 = document.getElementById('button-alert');
+    console.log(e1)
     e1.addEventListener("click", function() {
       dialogMakeAlert();
       const yes = dialogAppendYes();

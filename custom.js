@@ -1,4 +1,4 @@
-export { dialogMakeAlert, dialogMakePrompt, dialogAppendYes, dialogAppendNo, dialogAppendInputText, dialogAppendInputDate, dialogAppendInputTextArea, showDialog, closeDialog }
+export { dialogMakeAlert, dialogMakePrompt, dialogAppendInputText, dialogAppendInputDate, dialogAppendInputTextArea }
 
 function dialogMakeAlert() {
   const content = document.getElementById("dialog-content");
@@ -73,37 +73,4 @@ function dialogAppendInputTextArea(label, placeholder, id) {
   content.appendChild(input);
   content.appendChild(br);
   return input;
-}
-
-function dialogAppendYes() {
-  const content = document.getElementById("dialog-content");
-  const yes = document.createElement("button");
-  yes.type = "button";
-  yes.innerText = "OK";
-  yes.className = "yes";
-  content.appendChild(yes);
-  return yes;
-}
-
-function dialogAppendNo() {
-  const content = document.getElementById("dialog-content");
-  const no = document.createElement("button");
-  no.type = "button";
-  no.innerText = "Cancel";
-  no.className = "no";
-  content.appendChild(no);
-  return no;
-}
-
-function showDialog() {
-  const dialog = document.getElementById("myDialog");
-  const out = document.getElementById("out");
-  if (out) out.value = "";
-  dialog.style.display = "block";
-}
-
-
-function closeDialog() {
-  const dialog = document.getElementById("myDialog");
-  dialog.style.display = "none";
 }

@@ -25,14 +25,13 @@ function makeBlogPost(root, title, date, summary, id) {
   text = text.concat(summary);
   s.innerText = text;
   s.className = "summary";
-  //d.innerText = date;
-  //s.innerText = summary;
   section.appendChild(t);
   section.appendChild(d);
   section.appendChild(s);
   section.appendChild(edit);
   section.appendChild(del);
   root.appendChild(section);
+  // return these so we can use them in the module and purify input in the click event
   return [edit, del];
 }
 

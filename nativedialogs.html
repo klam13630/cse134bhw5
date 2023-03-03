@@ -53,7 +53,7 @@
         const confirm_text = confirm("Would you like to confirm this message?");
         const confirm_out = document.getElementById("out");
         confirm_out.value = "The value returned by the confirm method is: " + confirm_text;
-      },10)
+      },0)
       
     }
 
@@ -67,7 +67,7 @@
         else {
           document.getElementById("out").value = "User did not enter a value."
         }
-      },10)
+      },0)
     }
 
     function safePromptFunc() {
@@ -80,7 +80,7 @@
         else {
           document.getElementById("out").value = "User did not enter a value."
         }
-      },10)
+      },0)
       
     }
     
@@ -90,7 +90,7 @@
       document.getElementById("out").value = "";
       setTimeout(function() {
         alert("This is your alert!");
-      }, 10)
+      }, 0)
     }, false);
     const e2 = document.getElementById("button-confirm");
     e2.addEventListener("click", confirmFunc, false)

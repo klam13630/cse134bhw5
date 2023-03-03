@@ -38,6 +38,7 @@
         <article>
           <h2> Making of this website </h2>
           <p>So, I'm writing this post while I am creating this website, therefore some of the things I mention may be gone by the time I finalize my design (Or maybe not! Maybe I planned properly!). Either way, this is just going to be a summary of the things I did.</p>
+          <h3>Part 1: Autofill</h3>
           <p>One weird issue I faced had to do with autofilling of the contact form. When the browser autofills, it applies a style called <strong>input:-internal-autofill-selected</strong>. More specifically, it looks like this: </p>
           <pre>
           <code>
@@ -65,7 +66,11 @@ input:-internal-autofill-selected {
 
           <h3> Part 2: Custom Dialogs</h3>
           <p> Newly added to the sidebar are the dialog and custom dialog sections - you'll notice there are two custom dialog sections; I'll get to that soon, don't worry. If you didn't already know, dialogs are basically a way in which you can use JavaScript in order to get input from the users, whether it's textual, date, boolean, etc.</p>
-          <p>You can compare the native JavaScript dialogs and the ones I created in the links on the sidebar. Now, you may be asking, why custom dialogs? Are the native ones not good enough for you? Well, kind of? HTML (not JavaScript!) has the (customizable) native &lt;dialog&gt; tag, but as part of the assignment, we weren't supposed to use that tag. Therefore if we want a customizable dialog, we had to make our own (or import it, but that's cheating.) </p>
+          <p>You can compare the native JavaScript dialogs and the ones I created in the links on the sidebar. Now, you may be asking, why custom dialogs? Are the native ones not good enough for you? Well, kind of? HTML (not JavaScript!) has the (customizable) native &lt;dialog&gt; tag, <span><s>but as part of the assignment, we weren't supposed to use that tag.</s></span> Therefore if we want a customizable dialog, we had to make our own (or import it, but that's cheating.) </p>
+          <p> Note: As it turns out, we were supposed to use &lt;dialog&gt;, so I simply made my own life harder with my lack of reading ability, as per usual. Well, I suppose that's a lesson learned. Reading is important! Regardless, the content below is still worth talking about, I think. Note that the second custom dialogs section in the sidebar is using dialogs; I reworked my code (again, as you'll see) in order to implement it.</p>
+          <p>My initial attempt at creating a dialog was have a base structure with all of the necessary elements (buttons, inputs, etc.), and I would just show/hide them as necessary depending on the type of dialog I needed. At first glance, that seemed to work well enough, and you can see that in the first custom dialogs link in the sidebar.</p>
+          <p>However, as I began the subsequent part of the assignment, implementing a simple CRUD blog (not this one, the other one), I found that I would require multiple different inputs, which would require a different dialog structure than the expected on from my original implementation, so it wouldn't work proper without some serious retooling. In lieu of that, I decided to rework the dialogs so I could slot in different inputs as necessary for different dialogs. </p>
+          <p></p>
         </article>
 
         <article>
@@ -172,8 +177,8 @@ input:-internal-autofill-selected {
       <ul>
         <li> <a href="./nativedialogs.html">Native Dialogs</a> </li>
         <li> <a href="./customdialogs.html">Custom Dialogs</a> </li>
-        <li> <a href="./custom.html">Custom Dialogs 2 - More Adaptive</a> </li>
-        <li> <a href="./crud.html">Blog - Using JavaScript</a> </li>
+        <li> <a href="./custdialog.html"> Custom Dialogs 2 - using &lt;dialog&gt;</li>
+        <li> <a href="./blog.html">Blog - Using JavaScript</a> </li>
       </ul>
     </aside>
   </body>
