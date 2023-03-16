@@ -74,6 +74,7 @@
       document.getElementById("no-posts").style.display = "none";
     }
     let obj = JSON.parse(posts);
+  
     for (let i = 0; i < obj["posts"].length; i++) {
       // for each post in localstorage, post it on html
       const root = document.getElementById("blog");
@@ -116,9 +117,10 @@
           const del = ret[1];
           addEditDeleteFuncs(edit, del, i);
           localStorage.setItem("posts", JSON.stringify(o));
+          //console.log(o);
           document.getElementById("no-posts").style.display = "none";
         }
-      }, false);
+      }, {once: true});
       dialog.showModal();    
     }, false);
 
@@ -153,15 +155,18 @@
             title.innerText = val1;
             date.innerText = "Date: ".concat(val2);
             summary.innerText = "Summary: ".concat(val3);
-            let p = localStorage.getItem("posts");
+            let posts = localStorage.getItem("posts");
             let o = JSON.parse(posts);
             const index = o["posts"].findIndex(p => p.id === id);
-            o["posts"][index]["submit-title"] = in1.value;
-            o["posts"][index]["submit-date"] = in2.value;
-            o["posts"][index]["submit-summary"] = in3.value;
+            //console.log(o);
+            //console.log(id);
+            //console.log(index);
+            o["posts"][index]["submit-title"] = val1;
+            o["posts"][index]["submit-date"] = val2;
+            o["posts"][index]["submit-summary"] = val3;
             localStorage.setItem("posts", JSON.stringify(o));
           }
-        }, false);
+        }, {once: true});
         dialog.showModal();
       }, false);
       
@@ -181,7 +186,7 @@
              // remove post from html and localstorage
             let posts = localStorage.getItem("posts");
             let o = JSON.parse(posts);
-            console.log("id = ", id);
+            //console.log("id = ", id);
             o = deleteBlogPost(id, o);
             localStorage.setItem("posts", JSON.stringify(o));
             if (o["posts"].length == 0) {
@@ -190,10 +195,9 @@
             //del.removeEventListener("click", delDialogClose());
           }
           // once: true is used to ensure we only have one event listener at a time so it doesn't try to delete already deleted posts.
-        }, { once: true });
+        }, {once: true});
         dialog.showModal();
       }, false);
-      console.dir(del);
     }
     
   </script>

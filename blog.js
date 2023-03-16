@@ -37,7 +37,7 @@ function makeBlogPost(root, title, date, summary, id) {
 
 function deleteBlogPost(id, obj) {
   const post = document.querySelector(`[id="${id}"] `);
-  console.log("something was deleted");
+  //console.log("something was deleted");
   //console.log(post.innerHTML);
   post.remove();
   const index = obj["posts"].findIndex(o => o.id === id);
