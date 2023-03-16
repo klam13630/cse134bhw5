@@ -67,6 +67,7 @@
     if (!posts || posts.length <= 12) {
       // placeholder as per assignment specs
       posts ='{"posts":[{"submit-title":"The Bee Movie Script","submit-date":"2023-02-28","submit-summary":"According to all known laws of aviation, there is no way a bee should be able to fly.\\nIts wings are too small to get its fat little body off the ground.\\nThe bee, of course, flies anyway because bees don\'t care what humans think is impossible.","id":"v1umI5"},{"submit-title":"Take a quiz to see which HTML element you are!","submit-date":"2023-03-01","submit-summary":"Personally, I\'m a footer.","id":"cp6wgp"},{"submit-title":"A Blog Post By Somebody","submit-date":"2023-03-02","submit-summary":"Never gonna give you up. \\n Never gonna let you down.","id":"7W581C"}]}';
+      localStorage.setItem("posts", posts);
       document.getElementById("no-posts").style.display = "none";
     }
     else {
@@ -123,6 +124,8 @@
 
     // this function is here, rather than in blog.js so I can easily sanitize the inputs.
     function addEditDeleteFuncs(edit, del, id) {
+      // console.log(edit.parentNode);
+      // console.log(del.parentNode);
       edit.addEventListener("click", 
       function editBlog() {
         dialogMakePrompt();
@@ -145,12 +148,12 @@
             const val1 = DOMPurify.sanitize(in1.value);
             const val2 = DOMPurify.sanitize(in2.value);
             const val3 = DOMPurify.sanitize(in3.value);
-            console.log(in3.value);
-            console.log(val3);
+            // console.log(in3.value);
+            // console.log(val3);
             title.innerText = val1;
             date.innerText = "Date: ".concat(val2);
             summary.innerText = "Summary: ".concat(val3);
-            let posts = localStorage.getItem("posts");
+            let p = localStorage.getItem("posts");
             let o = JSON.parse(posts);
             const index = o["posts"].findIndex(p => p.id === id);
             o["posts"][index]["submit-title"] = in1.value;
@@ -161,14 +164,16 @@
         }, false);
         dialog.showModal();
       }, false);
-
+      
       del.addEventListener("click", 
       function () {
         dialogMakeAlert();
+        
         const text = document.querySelector(".dialog-text");
         text.innerHTML = "Are you sure you want to delete this?";
+        //dialog.removeEventListener("close", delDialogClose);
         dialog.addEventListener("close",
-        function delDialogClose(){
+        function delDialogClose(){     
           if (dialog.returnValue == "cancel") {
             return;
           }
@@ -176,15 +181,19 @@
              // remove post from html and localstorage
             let posts = localStorage.getItem("posts");
             let o = JSON.parse(posts);
+            console.log("id = ", id);
             o = deleteBlogPost(id, o);
             localStorage.setItem("posts", JSON.stringify(o));
             if (o["posts"].length == 0) {
               document.getElementById("no-posts").style.display = "block";
             }
+            //del.removeEventListener("click", delDialogClose());
           }
-        }, false);
+          // once: true is used to ensure we only have one event listener at a time so it doesn't try to delete already deleted posts.
+        }, { once: true });
         dialog.showModal();
       }, false);
+      console.dir(del);
     }
     
   </script>

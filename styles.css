@@ -10,6 +10,10 @@
   */
 }
 
+output {
+  white-space: pre;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
       --font-color: #c4c4c4;
@@ -354,6 +358,11 @@ dialog {
 #button-add {
   width: 75%;
   height: auto;
+}
+
+.buttons {
+  text-align: center;
+  display: block;
 }
 
 
